@@ -36,7 +36,7 @@ public class App {
                 printNumericBoxesField(box);
                 announceTheWinner((byte) 3);
             }
-            // Print playing table
+
             if(isGameRunning)
                 printNumericBoxesField(box);
         }
