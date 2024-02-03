@@ -5,23 +5,19 @@ import java.util.Scanner;
 
 public class App {
     static boolean boxAvailable = true;
-    static boolean firstTablePrint = true;
+    static boolean isGameRunning = true;
 
     public static void main(String[] args) {
         char chX = 'X';
         char chO = 'O';
         Scanner scan = new Scanner(System.in);
         char[] box = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        System.out.println("\nEnter box number to select. Enjoy!");
 
-        System.out.println("\nEnter box number to select. Enjoy!\n");
-
-        // Print playing table
         printNumericBoxesField(box);
+        clearBoxesField(box);
 
-        // Clearing all boxes at the start og the game
-        firstClearBoxesField(box);
-
-        while (true) {
+        while (isGameRunning) {
 
             // Get input from player to choose the box
             playerChoice(chX, chO, scan, box);
@@ -38,11 +34,11 @@ public class App {
             // Draw if box is fool and exit the game
             if (!App.boxAvailable) {
                 printNumericBoxesField(box);
-                announceTheWinner((byte)3);
-                break;
+                announceTheWinner((byte) 3);
             }
             // Print playing table
-            printNumericBoxesField(box);
+            if(isGameRunning)
+                printNumericBoxesField(box);
         }
     }
 
@@ -57,33 +53,35 @@ public class App {
             }
             // Checking for the winner if box is fool and exit the game
             announceTheWinner(winner);
+            App.isGameRunning = false;
             return true;
         }
         return false;
     }
 
     private static void printNumericBoxesField(char[] box) {
+        // Invert matrix for PC
         System.out.println(" " + box[6] + " | " + box[7] + " | " + box[8] + " ");
         System.out.println("-----------");
         System.out.println(" " + box[3] + " | " + box[4] + " | " + box[5] + " ");
         System.out.println("-----------");
-        System.out.println(" " + box[0] + " | " + box[1] + " | " + box[2] + " \n");
+        System.out.print  (" " + box[0] + " | " + box[1] + " | " + box[2] + " \n");
     }
 
-    private static void firstClearBoxesField(char[] box) {
+    private static void clearBoxesField(char[] box) {
         for (int i = 0; i < 9; i++) {
             box[i] = ' ';
         }
-        App.firstTablePrint = false;
     }
 
     private static void announceTheWinner(byte winner) {
         switch (winner) {
-            case 1 -> System.out.println("You won the game!");
-            case 2 -> System.out.println("You lost the game!");
-            case 3 -> System.out.println("It's a draw!");
+            case 1 -> System.out.println("\nou won the game!");
+            case 2 -> System.out.println("\nYou lost the game!");
+            default -> System.out.println("\nIt's a draw!");
         }
         System.out.println("Created by Shreyas Saha. Thanks for playing!\n");
+        App.isGameRunning = false;
     }
 
     private static void playerChoice(char chX, char chO, Scanner scan, char[] box) {
@@ -132,8 +130,8 @@ public class App {
         byte rand;
         if (App.boxAvailable) {
             while (true) {
-                rand = (byte) (Math.random() * 10);
-                if (rand != 0 && box[rand - 1] != chX && box[rand - 1] != chO) {
+                rand = (byte) (Math.random() * 9 + 1);
+                if (box[rand - 1] != chX && box[rand - 1] != chO) {
                     box[rand - 1] = chO;
                     break;
                 }
