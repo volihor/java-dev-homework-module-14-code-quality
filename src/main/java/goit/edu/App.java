@@ -8,7 +8,6 @@ public class App {
     static boolean firstTablePrint = true;
 
     public static void main(String[] args) {
-        byte winner;
         char chX = 'X';
         char chO = 'O';
         Scanner scan = new Scanner(System.in);
@@ -24,40 +23,22 @@ public class App {
 
         while (true) {
 
-            // Get input from player
+            // Get input from player to choose the box
             playerChoice(chX, chO, scan, box);
-
             // Check if player won
-//            if (isMatchedForWin(chX, box)) {
-//                winner = 1;
-//                printNumericBoxesField(box);
-//                // Checking for the winner if box is fool and exit the game
-//                announceTheWinner(winner);
-//                break;
-//            }
+            if (checkForWinAndAnnounceWinner(chX, box))
+                break;
 
-            if (extractedTest(chX, box)) break;
-
-            // Get random number to choose box
+            // Get random number from PC to choose the box
             getRandomNumber(chX, chO, box);
-
             // Check if PC won
-//            if (isMatchedForWin(chO, box)) {
-//                winner = 2;
-//                printNumericBoxesField(box);
-//                // Checking for the winner if box is fool and exit the game
-//                announceTheWinner(winner);
-//                break;
-//            }
+            if (checkForWinAndAnnounceWinner(chO, box))
+                break;
 
-            if (extractedTest(chO, box)) break;
-
-
+            // Draw if box is fool and exit the game
             if (!App.boxAvailable) {
-                winner = 3;
                 printNumericBoxesField(box);
-                // Checking for the winner if box is fool and exit the game
-                announceTheWinner(winner);
+                announceTheWinner((byte)3);
                 break;
             }
             // Print playing table
@@ -65,10 +46,10 @@ public class App {
         }
     }
 
-    private static boolean extractedTest(char ch, char[] box) {
-        byte winner = 0;
+    private static boolean checkForWinAndAnnounceWinner(char ch, char[] box) {
         if (isMatchedForWin(ch, box)) {
             printNumericBoxesField(box);
+            byte winner;
             if (ch == 'X') {
                 winner = 1;
             } else {
