@@ -76,7 +76,7 @@ public class App {
 
     private static void announceTheWinner(byte winner) {
         switch (winner) {
-            case 1 -> System.out.println("\nou won the game!");
+            case 1 -> System.out.println("\nYou won the game!");
             case 2 -> System.out.println("\nYou lost the game!");
             default -> System.out.println("\nIt's a draw!");
         }
