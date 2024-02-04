@@ -22,17 +22,17 @@ public class App {
             // Get input from player to choose the box
             playerChoice(chX, chO, scan, box);
             // Check if player won
-            if (checkForWinAndAnnounceWinner(chX, box))
-                break;
+            checkForWinAndAnnounceWinner(chX, box);
 
             // Get random number from PC to choose the box
             getRandomNumber(chX, chO, box);
             // Check if PC won
-            if (checkForWinAndAnnounceWinner(chO, box))
-                break;
+            if (isGameRunning){
+                checkForWinAndAnnounceWinner(chO, box);
+            }
 
             // Draw if box is fool and exit the game
-            if (!App.boxAvailable) {
+            if (isGameRunning && !boxAvailable) {
                 printNumericBoxesField(box);
                 announceTheWinner((byte) 3);
             }
@@ -42,7 +42,7 @@ public class App {
         }
     }
 
-    private static boolean checkForWinAndAnnounceWinner(char ch, char[] box) {
+    private static void checkForWinAndAnnounceWinner(char ch, char[] box) {
         if (isMatchedForWin(ch, box)) {
             printNumericBoxesField(box);
             byte winner;
@@ -53,10 +53,8 @@ public class App {
             }
             // Checking for the winner if box is fool and exit the game
             announceTheWinner(winner);
-            App.isGameRunning = false;
-            return true;
+            isGameRunning = false;
         }
-        return false;
     }
 
     private static void printNumericBoxesField(char[] box) {
@@ -76,17 +74,17 @@ public class App {
 
     private static void announceTheWinner(byte winner) {
         switch (winner) {
-            case 1 -> System.out.println("\nou won the game!");
+            case 1 -> System.out.println("\nYou won the game!");
             case 2 -> System.out.println("\nYou lost the game!");
             default -> System.out.println("\nIt's a draw!");
         }
         System.out.println("Created by Shreyas Saha. Thanks for playing!\n");
-        App.isGameRunning = false;
+        isGameRunning = false;
     }
 
     private static void playerChoice(char chX, char chO, Scanner scan, char[] box) {
         byte input = 0;
-        if (App.boxAvailable) {
+        if (boxAvailable) {
             do {
                 input = getPlayerInput(scan, input);
 
@@ -128,7 +126,7 @@ public class App {
 
     private static void getRandomNumber(char chX, char chO, char[] box) {
         byte rand;
-        if (App.boxAvailable) {
+        if (boxAvailable) {
             while (true) {
                 rand = (byte) (Math.random() * 9 + 1);
                 if (box[rand - 1] != chX && box[rand - 1] != chO) {
@@ -157,6 +155,6 @@ public class App {
         for (char c : box) {
             if (c == ' ') countWS++;
         }
-        App.boxAvailable = (countWS != 0);
+        boxAvailable = (countWS != 0);
     }
 }
